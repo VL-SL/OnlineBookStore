@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f7f7f7;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Добавление книги</h2>
+    <form>
+        <label for="bookId">Идентификатор книги</label>
+        <input type="number" id="bookId" name="bookId" required>
+
+        <label for="bookTitle">Название книги</label>
+        <input type="text" id="bookTitle" name="bookTitle" required>
+
+        <label for="author">Автор</label>
+        <input type="text" id="author" name="author" required>
+
+        <label for="language">Язык издания</label>
+        <input type="text" id="language" name="language" required>
+
+        <label for="publishingHouse">Издательство</label>
+        <input type="text" id="publishingHouse" name="publishingHouse" required>
+
+        <label for="publicationYear">Год выпуска</label>
+        <input type="number" id="publicationYear" name="publicationYear" required>
+
+        <label for="genre">Жанр</label>
+        <input type="text" id="genre" name="genre" required>
+
+        <label for="ISBN">ISBN</label>
+        <input type="text" id="ISBN" name="ISBN" required>
+
+        <label for="price">Цена</label>
+        <input type="number" step="0.01" id="price" name="price" required>
+
+        <label for="pageCount">Количество страниц</label>
+        <input type="number" id="pageCount" name="pageCount" required>
+
+        <label for="annotation">Аннотация</label>
+        <textarea id="annotation" name="annotation" rows="4" required></textarea>
+
+        <label for="bookRating">Рейтинг</label>
+        <input type="number" id="bookRating" name="bookRating" required>
+
+        <label for="isNewBook">Новинка?</label>
+        <select id="isNewBook" name="isNewBook" required>
+            <option value="true">Да</option>
+            <option value="false">Нет</option>
+        </select>
+
+        <label for="bookCount">В наличии (шт)</label>
+        <input type="number" id="bookCount" name="bookCount" required>
+
+        <button type="submit">Add Book</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Корзина покупок</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Название книги</th>
+            <th>Автор</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Итоговая цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cartItem : ${cartItems}">
+            <td th:text="${cartItem.book.bookTitle}"></td>
+            <td th:text="${cartItem.book.author}"></td>
+            <td th:text="${cartItem.book.price}"></td>
+            <td th:text="${cartItem.quantity}"></td>
+            <td th:text="${cartItem.book.price * cartItem.quantity}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <p><strong>ИТОГО к оплате:</strong> <span th:text="${totalPrice}"></span></p>
+    </div>
+    <form th:action="@{/cart/clear}" method="post">
+        <button type="submit" class="btn btn-danger">Очистить корзину</button>
+    </form>
+    <a href="/" class="btn btn-primary">Продолжить покупки</a>
+</div>
+</body>
+</html>

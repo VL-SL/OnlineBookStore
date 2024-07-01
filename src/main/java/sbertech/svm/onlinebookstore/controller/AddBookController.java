@@ -1,34 +1,32 @@
 package sbertech.svm.onlinebookstore.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import sbertech.svm.onlinebookstore.model.Book;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import sbertech.svm.onlinebookstore.service.BookService;
 
 @Controller
-@RequestMapping("/api/v1/addbook")
+@RequiredArgsConstructor
+@RequestMapping("/employee")
 public class AddBookController {
     private final BookService bookService;
 
-    @Autowired
-    public AddBookController(BookService bookService) {
-        this.bookService = bookService;
-    }
-
-    @GetMapping
+    @GetMapping("/add-book")
     public String showAddBookForm(Model model) {
-        model.addAttribute("book", new Book());
+        model.addAttribute("id", bookService.getID());
+        model.addAttribute("genre", bookService.getGenre());
+        model.addAttribute("languages", bookService.getLanguages());
         return "add-book";
     }
 
-    @PostMapping
-    public String addBook(@ModelAttribute Book book, Model model) {
-        model.addAttribute("book", book);
-        return "book-added-success";
+    @PostMapping("/add-book/new")
+    public String addBook(@ModelAttribute Book book) {
+        bookService.addBook(book);
+        return "redirect:/employee/add-book";
     }
 }

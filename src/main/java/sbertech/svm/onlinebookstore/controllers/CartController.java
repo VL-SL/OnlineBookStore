@@ -37,6 +37,12 @@ public class CartController {
         return "redirect:/cart";
     }
 
+    @PostMapping("/remove-item/{id}")
+    public String removeItemFromCart(@PathVariable Long id, @RequestHeader(value = "referer", required = false) String referer) {
+        cartService.removeBookFromCart(id);
+        return "redirect:" + (referer != null ? referer : "/cart");
+    }
+
     @PostMapping("/checkout")
     public String placeOrder(Model model) {
         String result = orderService.placeOrder(userService.getCurrentUser());
@@ -45,5 +51,20 @@ public class CartController {
             return viewCart(model);
         }
         return "redirect:/orders";
+    }
+
+    @PostMapping("/update-quantity/{id}")
+    public String updateQuantity(@PathVariable Long id, @RequestParam String action, Model model) {
+        try {
+            if (action.equals("increase")) {
+                cartService.increaseQuantity(id);
+            } else if (action.equals("decrease")) {
+                cartService.decreaseQuantity(id);
+            }
+        } catch (RuntimeException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return viewCart(model);
+        }
+        return "redirect:/cart";
     }
 }

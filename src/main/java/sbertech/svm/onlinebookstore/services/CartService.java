@@ -10,7 +10,6 @@ import sbertech.svm.onlinebookstore.repositories.CartItemRepository;
 import sbertech.svm.onlinebookstore.repositories.UserRepository;
 
 import java.text.DecimalFormat;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +41,22 @@ public class CartService {
         }
     }
 
+    public void increaseQuantity(Long cartItemId) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow();
+        cartItem.setQuantity(cartItem.getQuantity() + 1);
+        cartItemRepository.save(cartItem);
+    }
+
+    public void decreaseQuantity(Long cartItemId) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow();
+        if (cartItem.getQuantity() > 1) {
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+            cartItemRepository.save(cartItem);
+        } else {
+            cartItemRepository.delete(cartItem);
+        }
+    }
+
     public List<CartItem> getCartItems() {
         User user = getCurrentUser();
         return cartItemRepository.findByUser(user);
@@ -66,4 +81,10 @@ public class CartService {
         User user = getCurrentUser();
         return cartItemRepository.findByBookIdAndUserId(bookId, user.getId());
     }
+
+    public void removeBookFromCart(Long cartItemId) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow();
+        cartItemRepository.delete(cartItem);
+    }
+
 }

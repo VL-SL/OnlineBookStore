@@ -56,7 +56,7 @@
         }
 
         .navbar .auth-buttons button:hover {
-            background-color: #007bff;
+            background-color: #0056b3;
         }
 
         .navbar .auth-buttons button i {
@@ -142,11 +142,15 @@
             background-color: #dc3545;
         }
 
+        .btn-danger-alt {
+            background-color: #f5a623;
+        }
+
         .btn-success {
             background-color: #28a745;
         }
 
-        .btn-cart:hover, .btn-primary:hover, .btn-danger:hover, .btn-success:hover, .btn-icon:hover {
+        .btn-cart:hover, .btn-primary:hover, .btn-danger:hover, .btn-success:hover, .btn-icon:hover, .btn-danger-alt:hover {
             background-color: #0056b3;
         }
 
@@ -193,7 +197,7 @@
                 padding: 10px;
             }
 
-            .btn-cart, .btn-primary, .btn-danger, .btn-success, .btn-icon {
+            .btn-cart, .btn-primary, .btn-danger, .btn-success, .btn-icon, .btn-danger-alt {
                 padding: 10px;
                 font-size: 16px;
             }
@@ -249,6 +253,7 @@
                     <th>Цена</th>
                     <th>Количество</th>
                     <th>Итоговая цена</th>
+                    <th></th> <!-- Пустая ячейка для размещения кнопок -->
                 </tr>
                 </thead>
                 <tbody>
@@ -256,16 +261,28 @@
                     <td th:text="${cartItem.book.bookTitle}"></td>
                     <td th:text="${cartItem.book.author}"></td>
                     <td th:text="${cartItem.book.price} + ' ₽'"></td>
-                    <td th:text="${cartItem.quantity}"></td>
+                    <td>
+                        <form th:action="@{/cart/update-quantity/{id}(id=${cartItem.id})}" method="post" style="display: flex; align-items: center;">
+                            <button type="submit" name="action" value="decrease" class="btn-icon btn-danger"><i class="fas fa-minus"></i></button>
+                            <input type="text" th:value="${cartItem.quantity}" readonly class="form-control mx-2" style="width: 60px;">
+                            <button type="submit" name="action" value="increase" class="btn-icon btn-success"><i class="fas fa-plus"></i></button>
+                        </form>
+                    </td>
                     <td th:text="${#numbers.formatDecimal(cartItem.book.price * cartItem.quantity, 1, 2)} + ' ₽'"></td>
+                    <td>
+                        <form th:action="@{/cart/remove-item/{id}(id=${cartItem.id})}" method="post">
+                            <button type="submit" class="btn-icon btn-danger-alt"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
         <div class="total-price">
-            <p><strong>ИТОГО к оплате:</strong> <span th:text="${totalPrice} + ' ₽'"></span></p>
+            <p><strong>Итоговая сумма: </strong><span th:text="${totalPrice} + ' ₽'"></span></p>
         </div>
+
         <div class="text-right">
             <form th:action="@{/cart/clear}" method="post" style="display: inline;">
                 <button type="submit" class="btn-icon btn-danger"><i class="fas fa-trash-alt"></i></button>
@@ -277,7 +294,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="footer">
     <p><i class="fas fa-copyright"></i> 2024 Vl❦diSLღve</p>

@@ -2,10 +2,7 @@ package sbertech.svm.onlinebookstore.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import sbertech.svm.onlinebookstore.models.Book;
 import sbertech.svm.onlinebookstore.services.BookService;
@@ -25,7 +22,7 @@ public class AddBookController {
     }
 
     @PostMapping("/add-book/new")
-    public String addBook(@ModelAttribute Book book) {
+    public String addBook(@RequestBody Book book) {
         bookService.addBook(book);
         return "redirect:/employee/add-book";
     }

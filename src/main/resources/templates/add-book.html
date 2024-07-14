@@ -61,10 +61,7 @@
 <body>
 <div class="container">
     <h2>Добавление книги</h2>
-    <form th:action="@{/employee/add-book/new}" method="post">
-        <label for="bookId" style="display: none;">Идентификатор книги</label>
-        <input type="number" id="bookId" name="bookId" value="${id}" readonly style="display: none;">
-
+    <form id="addBookForm">
         <label for="bookTitle">Название книги</label>
         <input type="text" id="bookTitle" name="bookTitle" required>
 
@@ -119,5 +116,34 @@
         <button type="submit">Добавить</button>
     </form>
 </div>
+
+<script>
+    document.getElementById('addBookForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+
+        fetch('/employee/add-book/new', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+            if (response.ok) {
+                window.location.href = '/employee/add-book';
+            } else {
+                return response.json().then(errorData => {
+                    console.error('Error:', errorData);
+                });
+            }
+        })
+            .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
 </body>
 </html>

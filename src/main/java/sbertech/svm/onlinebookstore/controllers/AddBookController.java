@@ -1,4 +1,4 @@
-package sbertech.svm.onlinebookstore.controller;
+package sbertech.svm.onlinebookstore.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
-import sbertech.svm.onlinebookstore.model.Book;
-import sbertech.svm.onlinebookstore.service.BookService;
+import sbertech.svm.onlinebookstore.models.Book;
+import sbertech.svm.onlinebookstore.services.BookService;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,9 +18,9 @@ public class AddBookController {
 
     @GetMapping("/add-book")
     public String showAddBookForm(Model model) {
-        model.addAttribute("id", bookService.getID());
         model.addAttribute("genre", bookService.getGenre());
         model.addAttribute("languages", bookService.getLanguages());
+        model.addAttribute("book", new Book());
         return "add-book";
     }
 

@@ -50,3 +50,6 @@ build/
 
 # Maven
 log/
+/.mvn/wrapper/maven-wrapper.properties
+/mvnw
+/mvnw.cmd

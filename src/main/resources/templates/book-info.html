@@ -1,111 +1,286 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Информация о книге</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        .table-container {
-            margin: 20px 0;
+
+        .navbar {
+            background-color: #343a40;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
+
+        .navbar a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
         }
-        .table th, .table td {
-            border: 1px solid #ddd;
-            padding: 8px 12px;
-            text-align: left;
+
+        .navbar a:hover {
+            color: #007bff;
         }
-        .table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
+
+        .navbar .right-links {
+            display: flex;
+            align-items: center;
         }
-        .table tr:hover {
-            background-color: #f5f5f5;
+
+        .navbar .auth-buttons button {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            margin-left: 15px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
         }
+
+        .navbar .auth-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .navbar .auth-buttons button i {
+            margin-right: 8px;
+        }
+
         .header {
             text-align: center;
-            margin: 20px 0;
+            margin: 40px 0;
         }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .book-details {
+            display: flex;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
         .book-cover {
-            width: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .book-cover img {
+            max-width: 300px;
             height: auto;
-            object-fit: cover;
+            border-radius: 5px;
         }
-        .back-button-container {
-            text-align: center;
-            margin-bottom: 20px;
+
+        .book-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .cart-button-container {
+
+        .book-info h5 {
+            font-size: 1.5em;
+            color: #343a40;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-info .title-rating {
+            display: flex;
+            align-items: center;
+        }
+
+        .book-info .price {
+            font-size: 1.5em;
+            color: #007bff;
+            margin-left: auto;
+        }
+
+        .book-info .rating {
+            font-size: 1em;
+            color: #ffc107;
+            margin-left: 10px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .book-info .rating .stars {
+            margin-right: 5px;
+            font-size: 0.9em;
+        }
+
+        .book-info .rating span {
+            font-size: 0.9em;
+        }
+
+        .book-info .availability {
+            font-size: 1.1em;
+            color: #6c757d;
+            background-color: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-top: 15px;
             text-align: center;
-            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .book-info .in-cart {
+            font-size: 1.1em;
+            color: #28a745;
+            background-color: #e9f5ea;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .btn-cart {
+            background-color: #007bff;
+            border: none;
+            padding: 15px;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-cart:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-cart i {
+            margin-right: 8px;
+        }
+
+        .footer {
+            background-color: #e9ecef;
+            color: #6c757d;
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .footer i {
+            margin-right: 5px;
         }
     </style>
 </head>
 <body>
-<div class="back-button-container">
-    <a href="/" class="btn btn-primary">Вернуться на главную страницу</a>
-</div>
-<div class="header">
-    <h1>О книге</h1>
-</div>
-<div class="table-container">
-    <table class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th>Обложка</th>
-            <th>Название книги</th>
-            <th>Автор</th>
-            <th>Язык издания</th>
-            <th>Издательство</th>
-            <th>Год выпуска</th>
-            <th>Жанр</th>
-            <th>ISBN</th>
-            <th>Цена</th>
-            <th>Количество страниц</th>
-            <th>Аннотация</th>
-            <th>Рейтинг</th>
-            <th>Новинка</th>
-            <th>В наличии</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:object="${book}">
-            <td><img th:src="|/images/${book.image}.jpg|" width="100" height="150"></td>
-            <td th:text="*{bookTitle}"></td>
-            <td th:text="*{author}"></td>
-            <td th:text="*{language}"></td>
-            <td th:text="*{publishingHouse}"></td>
-            <td th:text="*{publicationYear}"></td>
-            <td th:text="*{genre}"></td>
-            <td th:text="*{ISBN}"></td>
-            <td th:text="*{price}"></td>
-            <td th:text="*{pageCount}"></td>
-            <td th:text="*{annotation}"></td>
-            <td th:text="*{bookRating}"></td>
-            <td th:text="*{isNewBook ? 'Да' : 'Нет'}"></td>
-            <td th:text="*{bookCount}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div class="cart-button-container">
-    <div th:if="${isInCart}">
-        <p>Товар уже есть в корзине в количестве <span th:text="${cartItemQuantity}"></span></p>
-        <form th:action="@{/cart/add/{id}(id=${book.bookId})}" method="post">
-            <button type="submit" class="btn btn-primary">Добавить еще</button>
-        </form>
+
+<div class="navbar">
+    <div>
+        <a href="/"><i class="fas fa-home"></i> Главная</a>
     </div>
-    <div th:if="${!isInCart}">
-        <form th:action="@{/cart/add/{id}(id=${book.bookId})}" method="post">
-            <button type="submit" class="btn btn-primary">Добавить в корзину</button>
-        </form>
+    <div class="right-links">
+        <a href="/orders"><i class="fas fa-box"></i></a>
+        <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
+        <div class="auth-buttons">
+            <div sec:authorize="isAnonymous()">
+                <button type="button" onclick="location.href='/login'"><i class="fas fa-sign-in-alt"></i> Войти</button>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <a href="/cart" class="btn btn-secondary">Посмотреть, что в корзине</a>
 </div>
+
+<div class="container">
+    <div class="header">
+        <h1>О книге</h1>
+    </div>
+    <div class="book-details">
+        <div class="book-cover">
+            <img th:src="|/images/${book.image}.jpg|" alt="Обложка книги">
+        </div>
+        <div class="book-info">
+            <h5>
+                <div class="title-rating">
+                    <span th:text="${book.bookTitle}">Название книги</span>
+                    <div class="rating">
+                        <div class="stars">
+                            <span class="star fas fa-star"></span>
+                        </div>
+                        <span th:text="${book.bookRating}">Рейтинг</span>
+                    </div>
+                </div>
+                <span class="price" th:text="${book.price} + ' ₽'">Цена</span>
+            </h5>
+            <p><strong>Автор:</strong> <span th:text="${book.author}">Автор</span></p>
+            <p><strong>Язык издания:</strong> <span th:text="${book.language}">Язык</span></p>
+            <p><strong>Издательство:</strong> <span th:text="${book.publishingHouse}">Издательство</span></p>
+            <p><strong>Год выпуска:</strong> <span th:text="${book.publicationYear}">Год выпуска</span></p>
+            <p><strong>Жанр:</strong> <span th:text="${book.genre}">Жанр</span></p>
+            <p><strong>ISBN:</strong> <span th:text="${book.ISBN}">ISBN</span></p>
+            <p><strong>Количество страниц:</strong> <span th:text="${book.pageCount}">Страницы</span></p>
+            <p><strong>Аннотация:</strong> <span th:text="${book.annotation}">Аннотация</span></p>
+            <p class="availability"><strong>В наличии:</strong> <span th:text="${book.bookCount}">В наличии</span></p>
+
+            <!-- Условное отображение, если книга уже в корзине -->
+            <div th:if="${isInCart}">
+                <p class="in-cart">
+                    <i class="fas fa-info-circle"></i> Находится в корзине в количестве: <span th:text="${cartItemQuantity}">Количество</span>
+                </p>
+            </div>
+
+            <a href="#" class="btn-cart" onclick="document.getElementById('add-to-cart-form').submit();"><i class="fas fa-cart-plus"></i> Добавить в корзину</a>
+
+            <!-- Форма для добавления в корзину -->
+            <form id="add-to-cart-form" th:action="@{/cart/add/{id}(id=${book.bookId})}" method="post" style="display: none;">
+                <input type="hidden" name="quantity" value="1">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p><i class="fas fa-copyright"></i> 2024 Vl❦diSLღve</p>
+</div>
+
 </body>
 </html>

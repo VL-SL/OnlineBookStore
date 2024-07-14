@@ -1,17 +1,19 @@
-package sbertech.svm.onlinebookstore.model;
+package sbertech.svm.onlinebookstore.models;
 
+import jakarta.annotation.Nullable;
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.lang.Nullable;
+import javax.validation.constraints.*;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
-
+@Entity
+@Table(name = "BOOK")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookId;
     private String bookTitle;
     private String author;

@@ -1,70 +1,202 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
   <meta charset="UTF-8">
   <title>Book List</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     body {
-        font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    .table-container {
-        margin: 20px 0;
+    .navbar {
+      background-color: #343a40;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .table {
-        width: 100%;
-        border-collapse: collapse;
+    .navbar a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-size: 18px;
+      transition: color 0.3s;
     }
-    .table th, .table td {
-        border: 1px solid #ddd;
-        padding: 8px 12px;
-        text-align: left;
+    .navbar a:hover {
+      color: #007bff;
     }
-    .table th {
-        background-color: #f2f2f2;
-        font-weight: bold;
+    .navbar .right-links {
+      display: flex;
+      align-items: center;
     }
-    .table tr:hover {
-        background-color: #f5f5f5;
+    .navbar .auth-buttons button {
+      background-color: #007bff;
+      border: none;
+      padding: 10px 15px;
+      color: white;
+      cursor: pointer;
+      margin-left: 15px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+    }
+    .navbar .auth-buttons button:hover {
+      background-color: #0056b3;
+    }
+    .navbar .auth-buttons button i {
+      margin-right: 8px;
     }
     .header {
-        text-align: center;
-        margin: 20px 0;
+      text-align: center;
+      margin: 40px 0;
     }
-    .book-cover {
-        width: 100px;
-        height: auto;
-        object-fit: cover;
+    .header h1 {
+      font-size: 2.5em;
+      color: #343a40;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      flex: 1;
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: 20px 0;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    .card img {
+      max-width: 200px;
+      height: auto;
+      align-self: center;
+      margin: 20px;
+      border-radius: 5px;
+    }
+    .card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+    .card-title {
+      font-size: 1.5em;
+      color: #343a40;
+    }
+    .card-text {
+      font-size: 1.2em;
+      color: #6c757d;
+      margin: 10px 0;
+    }
+    .price {
+      font-size: 2em;
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+    .availability {
+      font-size: 1.1em;
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+    .btn-details {
+      align-self: flex-end;
+      background-color: #007bff;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      border-radius: 5px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    .btn-details:hover {
+      background-color: #0056b3;
+    }
+    .btn-details i {
+      margin-right: 8px;
+    }
+    .footer {
+      background-color: #e9ecef;
+      color: #6c757d;
+      padding: 15px;
+      text-align: center;
+      border-top: 1px solid #dee2e6;
+    }
+    .footer p {
+      margin: 0;
+      font-size: 14px;
+    }
+    .footer i {
+      margin-right: 5px;
     }
   </style>
 </head>
 <body>
+
+<div class="navbar">
+  <div>
+    <a href="/"><i class="fas fa-home"></i> Главная</a>
+  </div>
+  <div class="right-links">
+    <a href="/orders"><i class="fas fa-box"></i></a>
+    <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
+    <div class="auth-buttons">
+      <div sec:authorize="isAnonymous()">
+        <button type="button" onclick="location.href='/login'"><i class="fas fa-sign-in-alt"></i> Войти</button>
+      </div>
+      <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+          <button type="submit"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="header">
   <h1>Список книг</h1>
 </div>
-<div class="table-container">
-  <table class="table table-bordered table-hover">
-    <thead>
-    <tr>
-      <th>Обложка</th>
-      <th>Название книги</th>
-      <th>Автор</th>
-      <th>Цена</th>
-      <th>Наличие</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="book : ${books}">
-      <td><img th:src="|/images/${book.image}.jpg|" width="100" height="150"></td>
-      <td th:text="${book.bookTitle}"></td>
-      <td th:text="${book.author}"></td>
-      <td th:text="${book.price}"></td>
-      <td th:text="${book.getAvailabilityMessage()}"></td>
-      <td><a th:href="@{/book/{id}(id=${book.bookId})}">Подробнее</a></td>
-    </tr>
-    </tbody>
-  </table>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4" th:each="book : ${books}">
+      <div class="card">
+        <img th:src="|/images/${book.image}.jpg|" alt="Обложка книги">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${book.bookTitle}">Название книги</h5>
+          <p class="card-text" th:text="${book.author}">Автор</p>
+          <p class="price"><span th:text="${book.price}">Цена</span> ₽</p>
+          <p class="availability" th:text="${book.getAvailabilityMessage()}">Наличие</p>
+          <a th:href="@{/book/{id}(id=${book.bookId})}" class="btn-details"><i class="fas fa-info-circle"></i> Подробнее</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<div class="footer">
+  <p><i class="fas fa-copyright"></i> 2024 Vl❦diSLღve</p>
+</div>
+
 </body>
 </html>

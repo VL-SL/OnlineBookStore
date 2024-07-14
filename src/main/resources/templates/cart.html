@@ -1,40 +1,287 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background-color: #343a40;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #007bff;
+        }
+
+        .navbar .right-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .auth-buttons button {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            margin-left: 15px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .auth-buttons button:hover {
+            background-color: #007bff;
+        }
+
+        .navbar .auth-buttons button i {
+            margin-right: 8px;
+        }
+
+        .header {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .alert {
+            margin: 20px 0;
+        }
+
+        .table-container {
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            margin: 0;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 15px;
+        }
+
+        .table thead {
+            background-color: #e9ecef;
+            color: #343a40;
+            border-radius: 10px;
+        }
+
+        .table thead th {
+            border-bottom: none;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table th {
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .btn-cart, .btn-primary, .btn-icon {
+            background-color: #007bff;
+            border: none;
+            padding: 15px;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            border-radius: 50%;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        .btn-cart:hover, .btn-primary:hover, .btn-danger:hover, .btn-success:hover, .btn-icon:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            margin: 0 5px;
+            background-color: #007bff;
+        }
+
+        .btn-icon:hover {
+            background-color: #007bff;
+        }
+
+        .total-price {
+            font-size: 1.5em;
+            color: #007bff;
+            text-align: right;
+            margin: 20px 0;
+        }
+
+        .footer {
+            background-color: #e9ecef;
+            color: #6c757d;
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .footer i {
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .table th, .table td {
+                padding: 10px;
+            }
+
+            .btn-cart, .btn-primary, .btn-danger, .btn-success, .btn-icon {
+                padding: 10px;
+                font-size: 16px;
+            }
+
+            .total-price {
+                font-size: 1.2em;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>Корзина покупок</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Название книги</th>
-            <th>Автор</th>
-            <th>Цена</th>
-            <th>Количество</th>
-            <th>Итоговая цена</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="cartItem : ${cartItems}">
-            <td th:text="${cartItem.book.bookTitle}"></td>
-            <td th:text="${cartItem.book.author}"></td>
-            <td th:text="${cartItem.book.price}"></td>
-            <td th:text="${cartItem.quantity}"></td>
-            <td th:text="${cartItem.book.price * cartItem.quantity}"></td>
-        </tr>
-        </tbody>
-    </table>
+
+<div class="navbar">
     <div>
-        <p><strong>ИТОГО к оплате:</strong> <span th:text="${totalPrice}"></span></p>
+        <a href="/"><i class="fas fa-home"></i> Главная</a>
     </div>
-    <form th:action="@{/cart/clear}" method="post">
-        <button type="submit" class="btn btn-danger">Очистить корзину</button>
-    </form>
-    <a href="/" class="btn btn-primary">Продолжить покупки</a>
+    <div class="right-links">
+        <a href="/orders"><i class="fas fa-box"></i></a>
+        <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
+        <div class="auth-buttons">
+            <div sec:authorize="isAnonymous()">
+                <button type="button" onclick="location.href='/login'"><i class="fas fa-sign-in-alt"></i> Войти</button>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="container">
+    <div class="header">
+        <h1>Корзина покупок</h1>
+    </div>
+
+    <div th:if="${errorMessage}">
+        <div class="alert alert-danger" th:text="${errorMessage}"></div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(cartItems)}">
+        <div class="alert alert-info">Ваша корзина пуста</div>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(cartItems)}">
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Название книги</th>
+                    <th>Автор</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Итоговая цена</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cartItem : ${cartItems}">
+                    <td th:text="${cartItem.book.bookTitle}"></td>
+                    <td th:text="${cartItem.book.author}"></td>
+                    <td th:text="${cartItem.book.price} + ' ₽'"></td>
+                    <td th:text="${cartItem.quantity}"></td>
+                    <td th:text="${#numbers.formatDecimal(cartItem.book.price * cartItem.quantity, 1, 2)} + ' ₽'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="total-price">
+            <p><strong>ИТОГО к оплате:</strong> <span th:text="${totalPrice} + ' ₽'"></span></p>
+        </div>
+        <div class="text-right">
+            <form th:action="@{/cart/clear}" method="post" style="display: inline;">
+                <button type="submit" class="btn-icon btn-danger"><i class="fas fa-trash-alt"></i></button>
+            </form>
+            <form th:action="@{/cart/checkout}" method="post" style="display: inline;">
+                <button type="submit" class="btn-icon btn-success"><i class="fas fa-credit-card"></i></button>
+            </form>
+            <a href="/" class="btn-icon btn-primary"><i class="fas fa-shopping-bag"></i></a>
+        </div>
+    </div>
+</div>
+
+
+<div class="footer">
+    <p><i class="fas fa-copyright"></i> 2024 Vl❦diSLღve</p>
+</div>
+
 </body>
 </html>

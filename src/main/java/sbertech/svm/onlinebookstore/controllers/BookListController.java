@@ -1,4 +1,4 @@
-package sbertech.svm.onlinebookstore.controller;
+package sbertech.svm.onlinebookstore.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -6,10 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import sbertech.svm.onlinebookstore.model.Book;
-import sbertech.svm.onlinebookstore.model.CartItem;
-import sbertech.svm.onlinebookstore.service.BookService;
-import sbertech.svm.onlinebookstore.service.CartService;
+import sbertech.svm.onlinebookstore.models.Book;
+import sbertech.svm.onlinebookstore.models.CartItem;
+import sbertech.svm.onlinebookstore.services.BookService;
+import sbertech.svm.onlinebookstore.services.CartService;
 
 import java.util.Optional;
 

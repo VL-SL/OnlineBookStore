@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои заказы</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background-color: #343a40;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #007bff;
+        }
+
+        .navbar .right-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .auth-buttons button {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            margin-left: 15px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .auth-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .navbar .auth-buttons button i {
+            margin-right: 8px;
+        }
+
+        .header {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .alert {
+            margin: 20px 0;
+        }
+
+        .orders-container {
+            margin: 20px 0;
+        }
+
+        .order-card {
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .order-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        .order-card h3 {
+            font-size: 1.5em;
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+
+        .order-card p {
+            font-size: 1em;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .order-card h4 {
+            font-size: 1.2em;
+            color: #007bff;
+            margin: 15px 0 10px;
+        }
+
+        .order-card ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .order-card ul li {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            background-color: #e9ecef;
+            color: #6c757d;
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .footer i {
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar .right-links {
+                margin-top: 10px;
+            }
+
+            .order-card {
+                padding: 15px;
+            }
+
+            .order-card h3 {
+                font-size: 1.3em;
+            }
+
+            .order-card h4 {
+                font-size: 1em;
+            }
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+            padding: 20px;
+        }
+
+        .empty-state i {
+            font-size: 3em;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .empty-state h2 {
+            font-size: 1.5em;
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 1em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div>
+        <a href="/"><i class="fas fa-home"></i> Главная</a>
+    </div>
+    <div class="right-links">
+        <a href="/orders"><i class="fas fa-box"></i></a>
+        <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
+        <div class="auth-buttons">
+            <div sec:authorize="isAnonymous()">
+                <button type="button" onclick="location.href='/login'"><i class="fas fa-sign-in-alt"></i> Войти</button>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Мои заказы</h1>
+    </div>
+
+    <div th:if="${errorMessage}">
+        <div class="alert alert-danger" th:text="${errorMessage}"></div>
+    </div>
+
+    <!-- Блок для случая, когда нет заказов -->
+    <div th:if="${#lists.isEmpty(orders)}" class="empty-state">
+        <i class="fas fa-box-open"></i>
+        <h2>У вас нет заказов</h2>
+        <p>Вы еще не сделали ни одного заказа. Перейдите на <a href="/" class="btn btn-link">главную страницу</a>, чтобы посмотреть книги.</p>
+    </div>
+
+    <!-- Блок для отображения заказов -->
+    <div th:if="${!#lists.isEmpty(orders)}" class="orders-container">
+        <ul>
+            <li th:each="order : ${orders}" class="order-card">
+                <div>
+                    <h3>Заказ №<span th:text="${order.id}"></span></h3>
+                    <p>Дата заказа: <span th:text="${order.orderDate}"></span></p>
+                    <p>Статус: <span th:text="${order.status}"></span></p>
+                    <p>Общая стоимость: <span th:text="${order.totalPrice}"></span> ₽</p>
+                    <h4>Товары:</h4>
+                    <ul>
+                        <li th:each="orderItem : ${order.orderItems}">
+                            <p th:text="${orderItem.book.bookTitle} + ' x' + ${orderItem.quantity} + ' = ' + ${orderItem.price} + ' ₽'"></p>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="footer">
+    <p><i class="fas fa-copyright"></i> 2024 Vl❦diSLღve</p>
+</div>
+
+</body>
+</html>

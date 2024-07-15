@@ -1,6 +1,7 @@
 package sbertech.svm.onlinebookstore.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -22,8 +23,13 @@ public class AddBookController {
     }
 
     @PostMapping("/add-book/new")
-    public String addBook(@RequestBody Book book) {
-        bookService.addBook(book);
-        return "redirect:/employee/add-book";
+    @ResponseBody
+    public ResponseEntity<?> addBook(@RequestBody Book book) {
+        try {
+            bookService.addBook(book);
+            return ResponseEntity.ok(book);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error adding book: " + e.getMessage());
+        }
     }
 }

@@ -256,18 +256,21 @@
             body: JSON.stringify(data)
         })
             .then(response => {
-            if (response.ok) {
-                window.location.href = '/employee/add-book';
-            } else {
-                return response.json().then(errorData => {
-                    console.error('Error:', errorData);
-                });
-            }
+            return response.json().then(json => {
+                if (response.ok) {
+                    console.log('Book added successfully:', json);
+                    // You can redirect or update the UI here
+                    window.location.href = '/employee/add-book';
+                } else {
+                    console.error('Error:', json);
+                }
+            });
         })
             .catch(error => {
             console.error('Error:', error);
         });
     });
+
 </script>
 
 </body>

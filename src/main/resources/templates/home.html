@@ -32,11 +32,15 @@
     .navbar a:hover {
       color: #007bff;
     }
+    .navbar .center-links {
+      display: flex;
+      align-items: center;
+    }
     .navbar .right-links {
       display: flex;
       align-items: center;
     }
-    .navbar .auth-buttons button {
+    .navbar .auth-buttons button, .navbar .add-book-button button {
       background-color: #007bff;
       border: none;
       padding: 10px 15px;
@@ -49,19 +53,23 @@
       display: flex;
       align-items: center;
     }
-    .navbar .auth-buttons button:hover {
+    .navbar .auth-buttons button:hover, .navbar .add-book-button button:hover {
       background-color: #0056b3;
     }
-    .navbar .auth-buttons button i {
+    .navbar .auth-buttons button i, .navbar .add-book-button button i {
       margin-right: 8px;
     }
     .header {
       text-align: center;
       margin: 40px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .header h1 {
       font-size: 2.5em;
       color: #343a40;
+      margin-right: 20px;
     }
     .container {
       max-width: 1200px;
@@ -158,6 +166,8 @@
   <div>
     <a href="/"><i class="fas fa-home"></i> Главная</a>
   </div>
+  <div class="center-links">
+  </div>
   <div class="right-links">
     <a href="/orders"><i class="fas fa-box"></i></a>
     <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
@@ -176,6 +186,9 @@
 
 <div class="header">
   <h1>Список книг</h1>
+  <div sec:authorize="hasRole('ROLE_ADMIN')" class="add-book-button">
+    <button type="button" onclick="location.href='/employee/add-book'"><i class="fas fa-plus"></i> Добавить книги</button>
+  </div>
 </div>
 <div class="container">
   <div class="row">

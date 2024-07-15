@@ -15,7 +15,7 @@ public class AddBookController {
 
     @GetMapping("/add-book")
     public String showAddBookForm(Model model) {
-        model.addAttribute("genre", bookService.getGenre());
+        model.addAttribute("genres", bookService.getGenre());
         model.addAttribute("languages", bookService.getLanguages());
         model.addAttribute("book", new Book());
         return "add-book";
